@@ -1,0 +1,36 @@
+{
+    "0": {
+        "12": {
+            "latents": {
+                "likely": {
+                    "cities": 0.7098930478096008,
+                    "neg_cities": 0.6524064540863037,
+                    "larger_than": 0.5106061100959778,
+                    "smaller_than": 0.6676768064498901,
+                    "sp_en_trans": 0.5649717450141907,
+                    "neg_sp_en_trans": 0.47457626461982727,
+                    "cities_cities_conj": 0.7196261882781982,
+                    "cities_cities_disj": 0.548064112663269,
+                    "companies_true_false": 0.5533333420753479,
+                    "common_claim_true_false": 0.6177527904510498,
+                    "counterfact_true_false": 0.5395444631576538
+                }
+            },
+            "centroids": {
+                "likely": {
+                    "cities": 0.8128342628479004,
+                    "neg_cities": 0.9251337051391602,
+                    "larger_than": 0.6257575750350952,
+                    "smaller_than": 0.8964647054672241,
+                    "sp_en_trans": 0.9802259802818298,
+                    "neg_sp_en_trans": 0.4689265489578247,
+                    "cities_cities_conj": 0.8437917828559875,
+                    "cities_cities_disj": 0.5373831987380981,
+                    "companies_true_false": 0.5575000047683716,
+                    "common_claim_true_false": 0.6795505881309509,
+                    "counterfact_true_false": 0.6028344035148621
+                }
+            }
+        }
+    }
+}
