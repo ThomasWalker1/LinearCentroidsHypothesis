@@ -4,9 +4,9 @@ This is the official repository for [The Linear Centroids Hypothesis: How Deep N
 
 In `centroids.py` are classes for computing centroids and local centroids for PyTorch modules.
 
-`exp-inr.ipynb` explores the implicit neural representation example of Section 3.3.
+`exp-inr.ipynb` explores the implicit neural representation example of fig 1.
 
-`exp-spurious_correlations.py` recreates fig 3 (left).
+`exp-spurious_correlations.py` recreates third panel of fig 2.
 
 The results of Section 4.1 can be recreated by running `exp-dino.sh`. (Note this installs the Imagenette dataset through torchvision).
 
