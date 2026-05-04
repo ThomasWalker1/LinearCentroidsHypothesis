@@ -9,6 +9,7 @@ In `centroids.py` are classes for computing centroids and local centroids for Py
 `exp-spurious_correlations.py` recreates third panel of fig 2.
 
 The results of Section 4.1 can be recreated by running `exp-dino.sh`. (Note this installs the Imagenette dataset through torchvision).
+- To recreate the analysis on dog breeds of ImageNet, run `exp-dino-dogs.sh`.
 
 The results of Section 4.2 can be recreated by running `exp-circuit_discovery.py`.
 
