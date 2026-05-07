@@ -6,10 +6,10 @@ from centroids import Centroids, LocalCentroids, InternalModuleWrapper
 DEVICE='cuda'
 
 # dataset parameters
-DATA_DIR='./data'
+DATA_DIR='/mnt/richb/datasets/ImageNet'
 DATASET='imagenet'
-SEED=5
-BATCH_SIZE=2
+SEED=6
+BATCH_SIZE=6
 
 
 # local centroid parameters
@@ -18,8 +18,8 @@ N_SAMPLES=30
 
 # model parameters
 ARCH = 'convnext_large'
-RB_MODEL = 'RodriguezMunoz2024Characterizing_Swin-B'
-TARGET_MODULE = 'model.layers.1.blocks.1.drop_path2'
+RB_MODEL = ''
+TARGET_MODULE = 'features.3'
 OUTPUT_DIR = f'outputs/{RB_MODEL}/{DATASET}' if len(RB_MODEL)>0 else f'outputs/{ARCH}/{DATASET}'
 os.makedirs(OUTPUT_DIR,exist_ok=True)
 
