@@ -15,4 +15,9 @@ The results of Section 4.1 can be recreated by running `exp-dino.sh`. (Note this
 
 The results of Section 4.2 can be recreated by running `exp-circuit_discovery.py`.
 
-The results of Section 4.3 can be recreated by running `exp-probes.sh`. (This requires downloading the `datasets` directory from [here](https://github.com/saprmarks/geometry-of-truth) and placing it into `outputs/probes`).
+Answer-targeted language-model local-centroid saliency maps can be generated
+with `exp-language_saliency.py`. This writes one PNG per question/answer pair
+to `outputs/language_saliency/<model>/`; no HTML is produced. It uses GPT-2 by
+default and accepts a custom JSON collection via `--examples`.
+
+The results of Section 4.3 can be recreated by running `exp-probes.sh`. (This requires downloading the `datasets` directory from [here](https://github.com/saprmarks/geometry-of-truth) and placing it into `outputs/probes`). 
