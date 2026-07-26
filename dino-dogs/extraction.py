@@ -23,7 +23,7 @@ import os
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 SAVE_DIR = Path("outputs/dino-dogs")
 BATCH_SIZE = 256
-DATA_ROOT = "./data"
+DATA_ROOT = os.environ.get("IMAGENET_ROOT", "./data")
 
 # --- Image Transformation ---
 DINO_TRANSFORM = transforms.Compose(

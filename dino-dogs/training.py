@@ -12,15 +12,29 @@ experimentation with different hyperparameters.
 # 1. Imports
 # ======================================================================================
 import argparse
+import json
 import random
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
 
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import wandb as wb
+try:
+    import wandb as wb
+except ModuleNotFoundError:  # logging is optional; training and checkpointing are not
+    class _NoOpRun:
+        def log_artifact(self, *args, **kwargs): pass
+        def finish(self, *args, **kwargs): pass
+
+    class _NoOpWandb:
+        Artifact = staticmethod(lambda *args, **kwargs: type("_A", (), {"add_file": lambda self, p: None})())
+        init = staticmethod(lambda *args, **kwargs: _NoOpRun())
+        log = staticmethod(lambda *args, **kwargs: None)
+
+    wb = _NoOpWandb()
+    print("wandb not installed -- continuing without experiment logging.")
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 
@@ -185,8 +199,12 @@ def train(config: argparse.Namespace, device: torch.device):
     print(f"Starting training for run: {run_name}")
     pbar = tqdm(range(config.epochs), desc="Training Epochs")
     total_steps = 0
+    # Full loss traces, kept locally so the curves are plottable without wandb.
+    step_losses: List[float] = []
+    epoch_losses: List[float] = []
     for _ in pbar:
         model.train()
+        running_loss, n_batches = 0.0, 0
         for x, _ in train_loader:
             x = x.to(device)
             optimizer.zero_grad()
@@ -195,16 +213,37 @@ def train(config: argparse.Namespace, device: torch.device):
             loss.backward()
             optimizer.step()
 
+            step_losses.append(loss.item())
+            running_loss += loss.item()
+            n_batches += 1
+
             if total_steps % 100 == 0:
                 wb.log({"step": total_steps, "loss": loss.item()})
-            
+
             total_steps += 1
-        
+
+        epoch_losses.append(running_loss / max(n_batches, 1))
         pbar.set_postfix(loss=f"{loss.item():.6f}")
 
     # --- Save Model and Log to WandB ---
     print(f"Training finished. Saving model to {model_save_path}")
     torch.save(model.state_dict(), model_save_path)
+
+    loss_path = run_dir / f"{run_name}-losses.json"
+    loss_path.write_text(
+        json.dumps(
+            {
+                "run_name": run_name,
+                "activation_type": config.activation_type,
+                "config": {k: str(v) for k, v in vars(config).items()},
+                "step_loss": step_losses,
+                "epoch_loss": epoch_losses,
+                "steps_per_epoch": len(step_losses) // max(config.epochs, 1),
+            },
+            indent=2,
+        )
+    )
+    print(f"Loss trace saved to {loss_path}")
     artifact = wb.Artifact(name=f"{run_name}_model", type="model")
     artifact.add_file(str(model_save_path))
     run.log_artifact(artifact)
